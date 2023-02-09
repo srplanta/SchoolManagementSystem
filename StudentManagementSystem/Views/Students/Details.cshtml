@@ -1,0 +1,49 @@
+﻿@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+
+<div>
+    <div class="row pt-2">
+        <div class="col-6">
+            <h1>@((Model != null) ? Model.Name + " Details" : string.Empty)</h1>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+        </div>
+    </div>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Standard)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Standard)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="AddOrEdit" asp-route-id="@Model?.StdId" class="btn btn-outline-primary">Edit Record</a>
+</div>

@@ -78,5 +78,10 @@ namespace StudentManagementSystem.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public IActionResult Details(int id)
+        {
+            return View(_context.Students.Find(id));
+        }
     }
 }
