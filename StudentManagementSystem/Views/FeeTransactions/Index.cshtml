@@ -16,8 +16,11 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Student)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TutionFee)
@@ -52,8 +55,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Student.StdId)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TutionFee)

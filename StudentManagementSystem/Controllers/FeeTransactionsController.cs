@@ -28,7 +28,8 @@ namespace StudentManagementSystem.Controllers
             }
             else
             {
-                return View();
+                FeeTransaction _feeTransaction = new FeeTransaction();
+                return View(_feeTransaction);
             }
         }
 
@@ -42,8 +43,8 @@ namespace StudentManagementSystem.Controllers
                     try
                     {
                         FeeTransaction _feeTransaction = _context.FeeTransactions.Find(feeTransaction.FeeId);
-                        _feeTransaction.FeeId = feeTransaction.FeeId;
-                        _feeTransaction.StudentId = feeTransaction.StudentId;
+                        //_feeTransaction.FeeId = feeTransaction.FeeId;
+                        //_feeTransaction.StudentId = feeTransaction.StudentId;
                         _feeTransaction.TutionFee = feeTransaction.TutionFee;
                         _feeTransaction.AdmissionFee = feeTransaction.AdmissionFee;
                         _feeTransaction.StationaryCharges = feeTransaction.StationaryCharges;
@@ -57,7 +58,7 @@ namespace StudentManagementSystem.Controllers
                             _feeTransaction.Fine +
                             _feeTransaction.PreviousArrears
                         );
-                        _feeTransaction.FeePaid= feeTransaction.FeePaid;
+                        _feeTransaction.FeePaid = feeTransaction.FeePaid;
 
                         _context.FeeTransactions.Update(_feeTransaction);
                         _context.SaveChanges();
@@ -72,6 +73,12 @@ namespace StudentManagementSystem.Controllers
                 {
                     try
                     {
+                        
+                        //feeTransaction.AdmissionFee <0?0: feeTransaction.AdmissionFee;
+                        //feeTransaction.StationaryCharges = feeTransaction.StationaryCharges;
+                        //feeTransaction.Fine = feeTransaction.Fine;
+                        //feeTransaction.PreviousArrears = feeTransaction.PreviousArrears;
+                        //feeTransaction.NextArrears
                         feeTransaction.FeePayable = (
                             feeTransaction.TutionFee +
                             feeTransaction.AdmissionFee +
@@ -79,6 +86,7 @@ namespace StudentManagementSystem.Controllers
                             feeTransaction.Fine +
                             feeTransaction.PreviousArrears
                         );
+                        
                         _context.FeeTransactions.Add(feeTransaction);
                         _context.SaveChanges();
                         return RedirectToAction("Index");
@@ -90,6 +98,19 @@ namespace StudentManagementSystem.Controllers
                 }
             }
             return View();
+        }
+
+        public IActionResult Delete(int id)
+        {
+            _context.FeeTransactions.Remove(_context.FeeTransactions.Find(id));
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int id)
+        {
+            ViewBag.Student = _context.Students.Find(id);
+            return View(_context.FeeTransactions.Find(id));
         }
     }
 }

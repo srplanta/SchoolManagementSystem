@@ -1,0 +1,79 @@
+﻿@model StudentManagementSystem.Models.FeeTransaction
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <div class="row pt-2">
+        <div class="col-6">
+            <h1>
+                @((Model != null) ? "Fee Bill Details\n" : string.Empty)<br />
+                @(ViewBag.Student.Name + ": ID - " + Model?.StudentId + "\nClass - " + ViewBag.Student.Standard)
+            </h1>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+        </div>
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TutionFee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TutionFee)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PreviousArrears)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PreviousArrears)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AdmissionFee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AdmissionFee)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fine)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fine)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StationaryCharges)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StationaryCharges)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FeePayable)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FeePayable)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FeePaid)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FeePaid)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NextArrears)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NextArrears)
+        </dd>
+        @*<dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Student)
+        </dt>
+        <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Student.StdId)
+        </dd>*@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.FeeId" class="btn btn-outline-primary">Edit Fee Bill</a>
+</div>

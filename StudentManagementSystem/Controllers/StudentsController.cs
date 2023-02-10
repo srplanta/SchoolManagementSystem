@@ -27,7 +27,8 @@ namespace StudentManagementSystem.Controllers
             else
             {
                 //return view to create new record
-                return View();
+                Student student = new Student();
+                return View(student);
             }
         }
 
