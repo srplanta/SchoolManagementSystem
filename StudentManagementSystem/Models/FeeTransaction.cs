@@ -19,7 +19,7 @@ public partial class FeeTransaction
 
     public decimal? StationaryCharges { get; set; }
 
-    public decimal FeePayable { get; set; }
+    public decimal? FeePayable { get; set; }
 
     public decimal? FeePaid { get; set; }
 
