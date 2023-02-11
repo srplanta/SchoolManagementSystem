@@ -5,17 +5,21 @@
 }
 
 <div>
-    <div class="row pt-2">
-        <div class="col-6">
-            <h1>
-                @((Model != null) ? "Fee Bill Details\n" : string.Empty)<br />
-                @(ViewBag.Student.Name + ": ID - " + Model?.StudentId + "\nClass - " + ViewBag.Student.Standard)
-            </h1>
-        </div>
-        <div class="col-6 text-end">
-            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
-        </div>
-    </div>
+    <dl class="row">
+        <dt class="col-sm-6 text-center text-capitalize">
+            @((Model != null) ? "Fee Bill Details\n" : string.Empty)
+        </dt>
+        <dd class="col-sm-6"></dd>
+        <dt class="col-sm-6 text-center">
+            @Html.DisplayNameFor(model=>model.Student.Name) - 
+            @Html.DisplayFor(model=>model.Student.Name) :
+            @Html.DisplayNameFor(model=>model.Student.Standard) -
+            @Html.DisplayFor(model=>model.Student.Standard) :
+            @Html.DisplayNameFor(model=>model.Student.StdId) -
+            @Html.DisplayFor(model=>model.Student.StdId)
+        </dt>
+        <dd class="col-sm-6"></dd>
+    </dl>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -66,14 +70,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NextArrears)
         </dd>
-        @*<dt class="col-sm-2">
+        <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Student)
         </dt>
         <dd class="col-sm-10">
         @Html.DisplayFor(model => model.Student.StdId)
-        </dd>*@
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.FeeId" class="btn btn-outline-primary">Edit Fee Bill</a>
+    <a asp-action="Edit" asp-route-id="@Model?.FeeId" class="btn btn-outline-primary">Edit Fee Bill</a> | 
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>

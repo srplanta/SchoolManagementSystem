@@ -42,7 +42,7 @@ namespace StudentManagementSystem.Controllers
                 {
                     try
                     {
-                        FeeTransaction _feeTransaction = _context.FeeTransactions.Find(feeTransaction.FeeId);
+                        FeeTransaction? _feeTransaction = _context.FeeTransactions.Find(feeTransaction.FeeId);
                         //_feeTransaction.FeeId = feeTransaction.FeeId;
                         //_feeTransaction.StudentId = feeTransaction.StudentId;
                         _feeTransaction.TutionFee = feeTransaction.TutionFee;
@@ -73,12 +73,6 @@ namespace StudentManagementSystem.Controllers
                 {
                     try
                     {
-                        
-                        //feeTransaction.AdmissionFee <0?0: feeTransaction.AdmissionFee;
-                        //feeTransaction.StationaryCharges = feeTransaction.StationaryCharges;
-                        //feeTransaction.Fine = feeTransaction.Fine;
-                        //feeTransaction.PreviousArrears = feeTransaction.PreviousArrears;
-                        //feeTransaction.NextArrears
                         feeTransaction.FeePayable = (
                             feeTransaction.TutionFee +
                             feeTransaction.AdmissionFee +
@@ -109,8 +103,9 @@ namespace StudentManagementSystem.Controllers
 
         public IActionResult Details(int id)
         {
-            ViewBag.Student = _context.Students.Find(id);
-            return View(_context.FeeTransactions.Find(id));
+            FeeTransaction? feeTransaction= _context.FeeTransactions.Find(id);
+            feeTransaction.Student = _context.Students.Find(feeTransaction.StudentId);
+            return View(feeTransaction);
         }
     }
 }

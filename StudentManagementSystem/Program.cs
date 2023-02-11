@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //CUSTOM CODE
-string connectionString = @"server=DESKTOP-MAE99H0; database=StudentDb; trusted_connection=true; TrustServerCertificate=true";
-builder.Services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
+//string connectionString = @"server=DESKTOP-MAE99H0; database=StudentDb; trusted_connection=true; TrustServerCertificate=true";
+//builder.Services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<StudentDbContext>();
 
 var app = builder.Build();
 

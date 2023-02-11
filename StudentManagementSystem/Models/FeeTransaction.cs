@@ -9,21 +9,21 @@ public partial class FeeTransaction
 
     public int StudentId { get; set; }
 
-    public decimal TutionFee { get; set; } = 0.0m;
+    public decimal TutionFee { get; set; }
 
-    public decimal? PreviousArrears { get; set; } = 0.0m;
+    public decimal? PreviousArrears { get; set; }
 
-    public decimal? AdmissionFee { get; set; } = 0.0m;
+    public decimal? AdmissionFee { get; set; }
 
-    public decimal? Fine { get; set; } = 0.0m;
+    public decimal? Fine { get; set; }
 
-    public decimal? StationaryCharges { get; set; } = 0.0m;
+    public decimal? StationaryCharges { get; set; }
 
-    public decimal? FeePayable { get; set; } = 0.0m;
+    public decimal? FeePayable { get; set; }
 
-    public decimal? FeePaid { get; set; } = 0.0m;
+    public decimal? FeePaid { get; set; }
 
-    public decimal? NextArrears { get; set; } = 0.0m;
+    public decimal? NextArrears { get; set; }
 
     public virtual Student Student { get; set; } = null!;
 }
