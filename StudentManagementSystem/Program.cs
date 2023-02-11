@@ -5,10 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-//CUSTOM CODE
-//string connectionString = @"server=DESKTOP-MAE99H0; database=StudentDb; trusted_connection=true; TrustServerCertificate=true";
-//builder.Services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
+// ***************************************************************************************
+// * CUSTOM CODE
+// * string connectionString = @"server=DESKTOP-MAE99H0; database=StudentDb; trusted_connection=true; TrustServerCertificate=true";
+// * builder.Services.AddDbContext<StudentDbContext>(options => options.UseSqlServer(connectionString));
+// * ABOVE TWO LINES ARE NOT NEEDED WHEN USING NAMED CONNECTION STRING
+// * ONLY BELOW SERVICE REGISTRATION IS ENOUGH
+//***************************************************************************************
 builder.Services.AddDbContext<StudentDbContext>();
 
 var app = builder.Build();

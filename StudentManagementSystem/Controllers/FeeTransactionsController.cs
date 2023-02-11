@@ -28,7 +28,7 @@ namespace StudentManagementSystem.Controllers
             }
             else
             {
-                FeeTransaction _feeTransaction = new FeeTransaction();
+                FeeTransaction _feeTransaction = new();
                 return View(_feeTransaction);
             }
         }

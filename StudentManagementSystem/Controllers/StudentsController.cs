@@ -75,6 +75,17 @@ namespace StudentManagementSystem.Controllers
 
         public IActionResult Delete(int id)
         {
+            //Student student = _context.Students.Find(id);
+            //student.FeeTransactions = _context.FeeTransactions.Where(x => x.StudentId == id);
+            IEnumerable<FeeTransaction> feeTransactions = _context.FeeTransactions.Where(x => x.StudentId == id);
+            _context.FeeTransactions.RemoveRange(feeTransactions);
+            _context.SaveChanges();
+            //foreach (FeeTransaction feeTransaction in feeTransactions)
+            //{
+            //    //_context.FeeTransactions.Remove(feeTransaction);
+            //    //_context.SaveChanges();
+                
+            //}
             _context.Students.Remove(_context.Students.Find(id));
             _context.SaveChanges();
             return RedirectToAction("Index");
