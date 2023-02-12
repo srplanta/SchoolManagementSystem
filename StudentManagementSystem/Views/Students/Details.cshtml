@@ -47,3 +47,42 @@
 <div>
     <a asp-action="AddOrEdit" asp-route-id="@Model?.StdId" class="btn btn-outline-primary">Edit Record</a>
 </div>
+<br /><hr /><hr />
+<h1>Fee bills</h1>
+@foreach(var feeTransaction in Model.FeeTransactions)
+{
+    <tr>
+        <td>1 @feeTransaction.FeeId</td>
+        <td>2 @feeTransaction.FeePayable</td>
+        <td>3 @feeTransaction.TutionFee</td>
+        <td>4 @feeTransaction.FeePaid</td>
+        <td>5 @feeTransaction.AdmissionFee</td>
+        <td>6 @feeTransaction.PreviousArrears</td>
+    </tr>
+}
+<hr /><br />
+@*PREPARE VIEW FOR AJAX VIEW*@
+<div class="container">
+    <div id="student" class="row">
+        <p>student container</p>
+    </div>
+    <div id="fee-bills" class="row">
+        <p>fee bills container</p>
+    </div>
+</div>
+
+@*AJAX SCRIPTS*@
+<script>
+    $('#student').html('jQuery is called!')
+    $.ajax({
+        type: 'Get',
+        url: '/FeeTransactions/FeeBillsOfStudent',  //return type: PartialViewResult
+        success: function (response) {
+            $('#fee-bills').html(response);
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+</script>
+

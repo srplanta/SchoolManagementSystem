@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "DetailsWithFeeTransactions";
+}
+
+<h1>DetailsWithFeeTransactions</h1>
+
+<div id="#student">Student div</div>
+<div id="feebill">fee bills div</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Student")',
+                //url: '/Students/Student',
+                success: function (response) {
+                    $('#student').html(response);
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        });
+    </script>
+}

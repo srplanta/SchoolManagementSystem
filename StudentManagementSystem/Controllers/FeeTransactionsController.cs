@@ -107,5 +107,11 @@ namespace StudentManagementSystem.Controllers
             feeTransaction.Student = _context.Students.Find(feeTransaction.StudentId);
             return View(feeTransaction);
         }
+
+        public PartialViewResult FeeBillsOfStudent()
+        {
+            IEnumerable<FeeTransaction> feeTransactions = _context.FeeTransactions.ToList();
+            return PartialView(feeTransactions);
+        }
     }
 }

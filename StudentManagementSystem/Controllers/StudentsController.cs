@@ -75,17 +75,11 @@ namespace StudentManagementSystem.Controllers
 
         public IActionResult Delete(int id)
         {
-            //Student student = _context.Students.Find(id);
-            //student.FeeTransactions = _context.FeeTransactions.Where(x => x.StudentId == id);
+            //DELETE FEE BILLS FIRST THEN STUDENT WILL BE REMOVED ELSE DATABASE WILL RETURN ERROER
             IEnumerable<FeeTransaction> feeTransactions = _context.FeeTransactions.Where(x => x.StudentId == id);
             _context.FeeTransactions.RemoveRange(feeTransactions);
             _context.SaveChanges();
-            //foreach (FeeTransaction feeTransaction in feeTransactions)
-            //{
-            //    //_context.FeeTransactions.Remove(feeTransaction);
-            //    //_context.SaveChanges();
-                
-            //}
+            //NOW STUDENT CAN BE DELETED
             _context.Students.Remove(_context.Students.Find(id));
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -94,6 +88,17 @@ namespace StudentManagementSystem.Controllers
         public IActionResult Details(int id)
         {
             return View(_context.Students.Find(id));
+        }
+
+        //ajax call will be used in this action method
+        public IActionResult DetailsWithFeeTransactions()
+        {
+            return View();
+        }
+
+        public PartialViewResult Student(int? id)
+        {
+            return PartialView(_context.Students.ToList());
         }
     }
 }
