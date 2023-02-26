@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 // * ABOVE TWO LINES ARE NOT NEEDED WHEN USING NAMED CONNECTION STRING
 // * ONLY BELOW SERVICE REGISTRATION IS ENOUGH
 //***************************************************************************************
-builder.Services.AddDbContext<StudentDbContext>();
+//builder.Services.AddDbContext<StudentDbContext>();
 
 var app = builder.Build();
 
