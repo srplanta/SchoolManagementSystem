@@ -1,0 +1,87 @@
+﻿@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<div class="container col-8">
+    <div class="row mt-5">
+        <div class="col-6">
+            <h2>Add New Student</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+        </div>
+    </div>
+    <hr />
+
+    <div class="container mt-5">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Name" class="control-label"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Gender" class="control-label"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Gender" class="form-control" />
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Age" class="control-label"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Standard" class="control-label"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Standard" class="form-control" />
+                        <span asp-validation-for="Standard" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row mt-3">
+                    <div class="col-8 offset-4">
+                        <input type="submit" value="Create" class="btn btn-primary form-control" />
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
