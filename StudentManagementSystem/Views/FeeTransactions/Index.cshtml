@@ -1,0 +1,98 @@
+﻿@model IEnumerable<StudentManagementSystem.Models.FeeTransaction>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-6">
+            <h2>All Fee Transactions</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-action="Add">Add New Fee Bill</a>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TutionFee)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PreviousArrears)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AdmissionFee)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fine)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StationaryCharges)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FeePayable)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FeePaid)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NextArrears)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student)
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TutionFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PreviousArrears)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AdmissionFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fine)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StationaryCharges)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FeePayable)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FeePaid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NextArrears)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.StdId)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.FeeId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.FeeId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.FeeId" onclick="return confirm('Are you sure you want to delete this record permanently?')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

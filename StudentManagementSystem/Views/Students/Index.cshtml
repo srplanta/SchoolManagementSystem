@@ -5,6 +5,16 @@
 }
 
 <div class="container">
+    @{
+        if (TempData["Message"] != null)
+        {
+            <span class="alert-info">
+                @TempData["Message"];
+            </span>
+            <br />
+        }
+    }
+
     <div class="row">
         <div class="col-6">
             <h2>All Students</h2>
@@ -54,7 +64,8 @@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.StdId">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.StdId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.StdId" onclick="return confirm('Are you sure to delete this record?')">Delete</a>
+                            <a asp-action="Delete" asp-route-id="@item.StdId" onclick="return confirm('Are you sure to delete this record?')">Delete</a> |
+                            <a asp-controller="FeeTransactions" asp-action="Add" asp-route-id="@item.StdId">Add Fee Bill</a>
                         </td>
                     </tr>
                 }

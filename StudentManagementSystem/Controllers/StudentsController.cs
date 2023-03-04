@@ -83,7 +83,9 @@ namespace StudentManagementSystem.Controllers
                 {
                     if (student.FeeTransactions.Count > 0)
                     {
-                        var feeTransactions = _context.FeeTransactions.Where(f => f.StudentId == id).ToList();
+                        var feeTransactions = _context.FeeTransactions
+                            .Where(f => f.StudentId == id)
+                            .ToList();
                         foreach (var feeTransaction in feeTransactions)
                         {
                             _context.FeeTransactions.Remove(feeTransaction);
