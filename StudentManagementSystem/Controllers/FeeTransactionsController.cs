@@ -25,25 +25,28 @@ namespace StudentManagementSystem.Controllers
         public IActionResult Add(int? id)
         {
             ViewBag.StudentId = new SelectList(_context.Students, "StdId", "Name");
-            var previousFeeTransaction = _context.FeeTransactions
-                    .FirstOrDefault(f => f.StudentId == id && f.FeePaid == null);
 
-            if (id > 0 && previousFeeTransaction != null)
+
+            if (id > 0)
             {
-                previousFeeTransaction.PreviousArrears = previousFeeTransaction.FeePayable;
-                previousFeeTransaction.AdmissionFee = null;
-                previousFeeTransaction.FeePaid = null;
-                previousFeeTransaction.FeePayable = null;
-                //previousFeeTransaction.TutionFee = 0m;
-                previousFeeTransaction.Fine = null;
-                previousFeeTransaction.NextArrears = null;
-                previousFeeTransaction.StationaryCharges = null;
-
+                var previousFeeTransaction = _context.FeeTransactions
+                    .FirstOrDefault(f => f.StudentId == id && f.FeePaid == null);
+                if (previousFeeTransaction != null)
+                {
+                    previousFeeTransaction.PreviousArrears = previousFeeTransaction.FeePayable;
+                    previousFeeTransaction.AdmissionFee = null;
+                    previousFeeTransaction.FeePaid = null;
+                    previousFeeTransaction.FeePayable = null;
+                    //previousFeeTransaction.TutionFee = 0m;
+                    previousFeeTransaction.Fine = null;
+                    previousFeeTransaction.NextArrears = null;
+                    previousFeeTransaction.StationaryCharges = null;
+                }
                 return View(previousFeeTransaction);
             }
             else
             {
-                return View(previousFeeTransaction);
+                return View();
             }
         }
 
@@ -54,17 +57,20 @@ namespace StudentManagementSystem.Controllers
             {
                 //Make previous fee bill read only
                 var previousFeeTransaction = _context.FeeTransactions
-                    .FirstOrDefault(f => f.FeeId == newFeeTransaction.FeeId);
+                    .FirstOrDefault(f => f.StudentId == newFeeTransaction.StudentId && f.FeePaid == null);
                 if (previousFeeTransaction != null && previousFeeTransaction.FeePaid == null)
                 {
                     previousFeeTransaction.FeePaid = 0;
                     previousFeeTransaction.NextArrears = previousFeeTransaction.FeePayable - previousFeeTransaction.FeePaid;
                     _context.FeeTransactions.Update(previousFeeTransaction);
                     _context.SaveChanges();
-                    TempData["Message"] = $"INFO: Fee Transaction against ID#{previousFeeTransaction.FeeId} is made read only.";
+
+                    //newFeeTransaction.PreviousArrears = previousFeeTransaction.NextArrears;
+                    newFeeTransaction.FeeId = 0;
+                    //TempData["Message"] = $"INFO: Fee Transaction against ID#{previousFeeTransaction.FeeId} is made read only.";
                 }
                 //Generate new fee bill in context of previous fee bill
-                newFeeTransaction.FeeId = 0;
+
                 newFeeTransaction.PreviousArrears ??= 0m;
                 newFeeTransaction.AdmissionFee ??= 0m;
                 newFeeTransaction.Fine ??= 0m;
@@ -80,7 +86,8 @@ namespace StudentManagementSystem.Controllers
                 TempData["Message"] = $"INFO: New fee bill ID#{newFeeTransaction.FeeId}" +
                     $" is generated against student ID#{newFeeTransaction.StudentId}.";
 
-                return RedirectToAction("Index", "Students");
+                //return RedirectToAction("Index", "Students");
+                return RedirectToAction("Index");
             }
             else
             {

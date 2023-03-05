@@ -20,6 +20,12 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model => model.FeeId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.TutionFee)
                     </th>
                     <th>
@@ -40,12 +46,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.FeePaid)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.NextArrears)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Student)
-                    </th>
+                    </th>*@
                     <th>
                         Actions
                     </th>
@@ -55,6 +58,12 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FeeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.StdId)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.TutionFee)
                         </td>
@@ -76,12 +85,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.FeePaid)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.NextArrears)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Student.StdId)
-                        </td>
+                        </td>*@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.FeeId">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.FeeId">Details</a> |
