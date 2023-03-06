@@ -26,10 +26,20 @@
                         <label asp-for="StudentId" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId">
-                            <option class="text-center">---  Select Student  ---</option>
-                        </select>
-                        <span asp-validation-for="StudentId" class="text-danger"></span>
+                        @{
+                            if (Model != null)
+                            {
+                                <select disabled asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+                            }
+                            else
+                            {
+                                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId">
+                                    <option class="text-center">- - -  Select Student  - - -</option>
+                                </select>
+                                <span asp-validation-for="StudentId" class="text-danger"></span>
+                            }
+                        }
+
                     </div>
                 </div>
             </div>
@@ -40,7 +50,14 @@
                         <label asp-for="TutionFee" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="TutionFee" class="form-control" />
+                        @if (Model?.TutionFee != null)
+                        {
+                            <input disabled asp-for="TutionFee" class="form-control" />
+                        }
+                        else
+                        {
+                            <input asp-for="TutionFee" class="form-control" onkeyup="CalculateFeeBill()" />
+                        }
                         <span asp-validation-for="TutionFee" class="text-danger"></span>
                     </div>
                 </div>
@@ -52,7 +69,14 @@
                         <label asp-for="PreviousArrears" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="PreviousArrears" class="form-control" />
+                        @if (Model?.PreviousArrears != null)
+                        {
+                            <input disabled asp-for="PreviousArrears" class="form-control" />
+                        }
+                        else
+                        {
+                            <input asp-for="PreviousArrears" class="form-control" onkeyup="CalculateFeeBill()" />
+                        }
                         <span asp-validation-for="PreviousArrears" class="text-danger"></span>
                     </div>
                 </div>
@@ -64,11 +88,11 @@
                         <label asp-for="AdmissionFee" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="AdmissionFee" class="form-control" />
+                        <input asp-for="AdmissionFee" class="form-control" onkeyup="CalculateFeeBill()" />
                         <span asp-validation-for="AdmissionFee" class="text-danger"></span>
                     </div>
                 </div>
-                
+
             </div>
 
             <div class="form-group">
@@ -77,7 +101,7 @@
                         <label asp-for="Fine" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="Fine" class="form-control" />
+                        <input asp-for="Fine" class="form-control" onkeyup="CalculateFeeBill()" />
                         <span asp-validation-for="Fine" class="text-danger"></span>
                     </div>
                 </div>
@@ -89,11 +113,11 @@
                         <label asp-for="StationaryCharges" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="StationaryCharges" class="form-control" />
+                        <input asp-for="StationaryCharges" class="form-control" onkeyup="CalculateFeeBill()" />
                         <span asp-validation-for="StationaryCharges" class="text-danger"></span>
                     </div>
                 </div>
-                
+
             </div>
 
             <div class="form-group">
@@ -102,35 +126,35 @@
                         <label asp-for="FeePayable" class="control-label"></label>
                     </div>
                     <div class="col-md-8">
-                        <input asp-for="FeePayable" class="form-control" />
+                        <input disabled asp-for="FeePayable" class="form-control" />
                         <span asp-validation-for="FeePayable" class="text-danger"></span>
                     </div>
                 </div>
-               
+
             </div>
 
             @*<div class="form-group">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label asp-for="FeePaid" class="control-label"></label>
-                    </div>
-                    <div class="col-md-8">
-                        <input asp-for="FeePaid" class="form-control" />
-                        <span asp-validation-for="FeePaid" class="text-danger"></span>
-                    </div>
-                </div>
+            <div class="row mb-3">
+            <div class="col-md-4">
+            <label asp-for="FeePaid" class="control-label"></label>
+            </div>
+            <div class="col-md-8">
+            <input asp-for="FeePaid" class="form-control" />
+            <span asp-validation-for="FeePaid" class="text-danger"></span>
+            </div>
+            </div>
             </div>*@
 
             @*<div class="form-group">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label asp-for="NextArrears" class="control-label"></label>
-                    </div>
-                    <div class="col-md-8">
-                        <input asp-for="NextArrears" class="form-control" />
-                        <span asp-validation-for="NextArrears" class="text-danger"></span>
-                    </div>
-                </div>
+            <div class="row mb-3">
+            <div class="col-md-4">
+            <label asp-for="NextArrears" class="control-label"></label>
+            </div>
+            <div class="col-md-8">
+            <input asp-for="NextArrears" class="form-control" />
+            <span asp-validation-for="NextArrears" class="text-danger"></span>
+            </div>
+            </div>
             </div>*@
 
             <div class="form-group">
@@ -144,5 +168,66 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+@*<a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    //alert('Before jQuery!');
+
+    //$(document).ready(function () {
+    //    //alert('using jQuery!');
+    //    $("#TutionFee")
+    //});
+
+    function CalculateFeeBill() {
+        var TutionFee;
+        var PreviousArrears;
+        var AdmissionFee;
+        var Fine;
+        var StationaryCharges;
+
+        //alert($("#TutionFee").val());
+        if ($("#TutionFee").val()) {
+            TutionFee = parseInt($("#TutionFee").val());
+        }else {
+            TutionFee = 0;
+        }
+
+        //alert($("#PreviousArrears").val());
+        if ($("#PreviousArrears").val()) {
+            PreviousArrears = parseInt($("#PreviousArrears").val());
+        }else {
+            PreviousArrears = 0;
+        }
+
+        //alert($("#AdmissionFee").val());
+        if ($("#AdmissionFee").val()) {
+            AdmissionFee = parseInt($("#AdmissionFee").val());
+        }else {
+            AdmissionFee = 0;
+        }
+
+        //alert($("#Fine").val());
+        if ($("#Fine").val()) {
+            Fine = parseInt($("#Fine").val());
+        }else {
+            Fine = 0;
+        }
+
+        //alert('StationaryCharges : ' + $("#StationaryCharges").val());
+        if ($("#StationaryCharges").val()) {
+            StationaryCharges = parseInt($("#StationaryCharges").val());
+        }else {
+            StationaryCharges = 0;
+        }
+
+        //var FeePayable = TutionFee + PreviousArrears + AdmissionFee + Fine + StationaryCharges;
+        //alert(TutionFee);
+        $("#FeePayable").val(TutionFee + PreviousArrears + AdmissionFee + Fine + StationaryCharges);
+    }
+</script>

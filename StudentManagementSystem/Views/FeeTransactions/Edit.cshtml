@@ -1,0 +1,76 @@
+﻿@model StudentManagementSystem.Models.FeeTransaction
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FeeTransaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FeeId" />
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId">
+                    <option class="text-center">- - -  Select Student  - - -</option>
+                </select>
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TutionFee" class="control-label"></label>
+                <input asp-for="TutionFee" class="form-control" />
+                <span asp-validation-for="TutionFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreviousArrears" class="control-label"></label>
+                <input asp-for="PreviousArrears" class="form-control" />
+                <span asp-validation-for="PreviousArrears" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdmissionFee" class="control-label"></label>
+                <input asp-for="AdmissionFee" class="form-control" />
+                <span asp-validation-for="AdmissionFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fine" class="control-label"></label>
+                <input asp-for="Fine" class="form-control" />
+                <span asp-validation-for="Fine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StationaryCharges" class="control-label"></label>
+                <input asp-for="StationaryCharges" class="form-control" />
+                <span asp-validation-for="StationaryCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeePayable" class="control-label"></label>
+                <input asp-for="FeePayable" class="form-control" />
+                <span asp-validation-for="FeePayable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeePaid" class="control-label"></label>
+                <input asp-for="FeePaid" class="form-control" />
+                <span asp-validation-for="FeePaid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextArrears" class="control-label"></label>
+                <input asp-for="NextArrears" class="form-control" />
+                <span asp-validation-for="NextArrears" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
