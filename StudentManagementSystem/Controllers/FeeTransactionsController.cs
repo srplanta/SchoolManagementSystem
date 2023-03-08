@@ -30,25 +30,25 @@ namespace StudentManagementSystem.Controllers
             if (id > 0)
             {
                 //fetch previous unpaid fee bill if any?
-                var previousFeeTransaction = _context.FeeTransactions
+                var outstandingFeeTransaction = _context.FeeTransactions
                     .FirstOrDefault(f => f.StudentId == id && f.FeePaid == null);
-                if (previousFeeTransaction != null)
+                if (outstandingFeeTransaction != null)
                 {
-                    //If previous unpaid fee bill found, make view form filled ready from previous record
+                    //If any outstandingFeeTransaction found, make view form filled ready from previous record
                     //Database record will not be affected with this
-                    //Following previousFeeTransaction.PreviousArrears are previousFeeTransaction.NextArrears in actual but ...
+                    //Following outstandingFeeTransaction.PreviousArrears are outstandingFeeTransaction.NextArrears in actual but ...
                     //will be used as newFeeTransaction.PreviousArrears in view form.
                     //Actual database operation will be handled in [HttpPost] Add(FeeTransaction newFeeTransaction) method.
-                    previousFeeTransaction.PreviousArrears = previousFeeTransaction.FeePayable;
-                    previousFeeTransaction.AdmissionFee = null;
-                    previousFeeTransaction.FeePaid = null;
-                    previousFeeTransaction.FeePayable = null;
-                    previousFeeTransaction.Fine = null;
-                    previousFeeTransaction.NextArrears = null;
-                    previousFeeTransaction.StationaryCharges = null;
-                    previousFeeTransaction.Student = _context.Students.Find(id) ?? new Student();
+                    outstandingFeeTransaction.PreviousArrears = outstandingFeeTransaction.FeePayable;
+                    outstandingFeeTransaction.AdmissionFee = null;
+                    outstandingFeeTransaction.FeePaid = null;
+                    outstandingFeeTransaction.FeePayable = null;
+                    outstandingFeeTransaction.Fine = null;
+                    outstandingFeeTransaction.NextArrears = null;
+                    outstandingFeeTransaction.StationaryCharges = null;
+                    outstandingFeeTransaction.Student = _context.Students.Find(id) ?? new Student();
                 }
-                return View(previousFeeTransaction);
+                return View(outstandingFeeTransaction);
             }
             else
             {
@@ -63,19 +63,19 @@ namespace StudentManagementSystem.Controllers
             if (newFeeTransaction.TutionFee > 0)    //New fee bill requested?
             {
                 //fetch previous unpaid fee bill if any?
-                var previousFeeTransaction = _context.FeeTransactions
+                var outstandingFeeTransaction = _context.FeeTransactions
                     .FirstOrDefault(f => f.StudentId == newFeeTransaction.StudentId && f.FeePaid == null);
                 //Make previous fee bill read only
-                if (previousFeeTransaction != null && previousFeeTransaction.FeePaid == null)
+                if (outstandingFeeTransaction != null && outstandingFeeTransaction.FeePaid == null)
                 {
-                    previousFeeTransaction.FeePaid = 0;
-                    previousFeeTransaction.NextArrears = previousFeeTransaction.FeePayable - previousFeeTransaction.FeePaid;
-                    _context.FeeTransactions.Update(previousFeeTransaction);
+                    outstandingFeeTransaction.FeePaid = 0;
+                    outstandingFeeTransaction.NextArrears = outstandingFeeTransaction.FeePayable - outstandingFeeTransaction.FeePaid;
+                    _context.FeeTransactions.Update(outstandingFeeTransaction);
                     _context.SaveChanges();
 
-                    //newFeeTransaction.PreviousArrears = previousFeeTransaction.NextArrears;
+                    //newFeeTransaction.PreviousArrears = outstandingFeeTransaction.NextArrears;
                     //newFeeTransaction.FeeId = 0;
-                    //TempData["Message"] = $"INFO: Fee Transaction against ID#{previousFeeTransaction.FeeId} is made read only.";
+                    //TempData["Message"] = $"INFO: Fee Transaction against ID#{outstandingFeeTransaction.FeeId} is made read only.";
                 }
                 //Generate new fee bill in context of previous fee bill
 
@@ -192,6 +192,41 @@ namespace StudentManagementSystem.Controllers
                     .Include(f => f.Student)
                     .FirstOrDefault(f => f.FeeId == id);
                 return View(feeTransaction);
+            }
+        }
+
+        // *********************************************************
+        //                  UTILITY METHODS
+        // *********************************************************
+        [HttpPost]
+        public FeeTransaction OutstandingFeeTransaction(int id)         //id=>studentId
+        {
+            //FeeTransaction outstandingFeeTransaction = new();
+            var outstandingFeeTransaction = _context.FeeTransactions
+                .FirstOrDefault(f => f.StudentId == id && f.FeePaid == null);
+            if (outstandingFeeTransaction != null)
+            {
+                //If previous unpaid fee bill found, make view form filled ready from previous record
+                //Database record will not be affected with this
+                //Following outstandingFeeTransaction.PreviousArrears are outstandingFeeTransaction.NextArrears in actual but ...
+                //will be used as newFeeTransaction.PreviousArrears in view form.
+                //Actual database operation will be handled in [HttpPost] Add(FeeTransaction newFeeTransaction) method.
+                outstandingFeeTransaction.PreviousArrears = outstandingFeeTransaction.FeePayable;
+                outstandingFeeTransaction.AdmissionFee = null;
+                outstandingFeeTransaction.FeePaid = null;
+                outstandingFeeTransaction.FeePayable = null;
+                outstandingFeeTransaction.Fine = null;
+                outstandingFeeTransaction.NextArrears = null;
+                outstandingFeeTransaction.StationaryCharges = null;
+                //outstandingFeeTransaction.Student = _context.Students.Find(id) ?? new Student();
+                //TempData["Message"] = "Outstanding fee bill found!";
+                return outstandingFeeTransaction;
+            }
+            else
+            {
+                outstandingFeeTransaction = new();
+                //TempData["Message"] = "No outstanding fee bill found!";
+                return outstandingFeeTransaction;
             }
         }
     }

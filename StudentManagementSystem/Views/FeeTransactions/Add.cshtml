@@ -39,7 +39,6 @@
                                 <span asp-validation-for="StudentId" class="text-danger"></span>
                             }
                         }
-
                     </div>
                 </div>
             </div>
@@ -92,7 +91,6 @@
                         <span asp-validation-for="AdmissionFee" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
             <div class="form-group">
@@ -117,7 +115,6 @@
                         <span asp-validation-for="StationaryCharges" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
             <div class="form-group">
@@ -130,7 +127,6 @@
                         <span asp-validation-for="FeePayable" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
             @*<div class="form-group">
@@ -173,61 +169,70 @@
     }
 }
 
-@*<a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>*@
+@*<script src="~/js/site.js"></script>*@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript">
-    //alert('Before jQuery!');
 
-    //$(document).ready(function () {
-    //    //alert('using jQuery!');
-    //    $("#TutionFee")
-    //});
+<script type="text/javascript">
+    $("#StudentId").change(function () {
+        //alert(this.value);
+
+        $('#StudentId').append('<span class="alert-info">Please wait while we are fetching outstanding fee bill, if any!</span>')
+
+        var StudentId = parseInt($("#StudentId").val());
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OutstandingFeeTransaction", "FeeTransactions")',
+            data: { id: StudentId },
+            dataType: 'json',
+            success: function (success) {
+                //console.log(success);
+                //alert(success.previousArrears);
+                //TutionFee PreviousArrears AdmissionFee Fine StationaryCharges FeePayable
+
+                $("#TutionFee").val(success.tutionFee);
+                if (success.tutionFee) { $('#TutionFee').prop('disabled', true); }
+                $("#PreviousArrears").val(success.previousArrears);
+                if (success.previousArrears) { $('#PreviousArrears').prop('disabled', true); }
+                $("#AdmissionFee").val(success.admissionFee);
+                $("#Fine").val(success.Fine);
+                $("#StationaryCharges").val(success.stationaryCharges);
+                //$("#FeePayable").val(success.feePayable);
+                if (success.feePayable) {
+                    $("#FeePayable").val(success.feePayable);
+                }
+                else {
+                    CalculateFeeBill();
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    });
 
     function CalculateFeeBill() {
-        var TutionFee;
-        var PreviousArrears;
-        var AdmissionFee;
-        var Fine;
-        var StationaryCharges;
+        var TutionFee = 0;
+        var PreviousArrears = 0;
+        var AdmissionFee = 0;
+        var Fine = 0;
+        var StationaryCharges = 0;
 
-        //alert($("#TutionFee").val());
         if ($("#TutionFee").val()) {
             TutionFee = parseInt($("#TutionFee").val());
-        }else {
-            TutionFee = 0;
         }
-
-        //alert($("#PreviousArrears").val());
         if ($("#PreviousArrears").val()) {
             PreviousArrears = parseInt($("#PreviousArrears").val());
-        }else {
-            PreviousArrears = 0;
         }
-
-        //alert($("#AdmissionFee").val());
         if ($("#AdmissionFee").val()) {
             AdmissionFee = parseInt($("#AdmissionFee").val());
-        }else {
-            AdmissionFee = 0;
         }
-
-        //alert($("#Fine").val());
         if ($("#Fine").val()) {
             Fine = parseInt($("#Fine").val());
-        }else {
-            Fine = 0;
         }
-
-        //alert('StationaryCharges : ' + $("#StationaryCharges").val());
         if ($("#StationaryCharges").val()) {
             StationaryCharges = parseInt($("#StationaryCharges").val());
-        }else {
-            StationaryCharges = 0;
         }
-
-        //var FeePayable = TutionFee + PreviousArrears + AdmissionFee + Fine + StationaryCharges;
-        //alert(TutionFee);
         $("#FeePayable").val(TutionFee + PreviousArrears + AdmissionFee + Fine + StationaryCharges);
     }
 </script>
