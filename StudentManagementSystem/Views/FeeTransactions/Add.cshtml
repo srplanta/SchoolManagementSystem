@@ -5,23 +5,23 @@
 }
 
 <div class="container col-8">
-    <div class="row mt-5">
+    <div class="row my-3">
         <div class="col-md-8">
             <h2>Create New Fee Transaction</h2>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col-md-4 text-md-end">
             <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
         </div>
     </div>
     <hr />
 
-    <div class="container mt-5">
+    <div class="container my-3">
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FeeId" />
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="StudentId" class="control-label"></label>
                     </div>
@@ -39,12 +39,14 @@
                                 <span asp-validation-for="StudentId" class="text-danger"></span>
                             }
                         }
+                        <span id="info"></span>
                     </div>
                 </div>
             </div>
 
+
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="TutionFee" class="control-label"></label>
                     </div>
@@ -63,7 +65,7 @@
             </div>
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="PreviousArrears" class="control-label"></label>
                     </div>
@@ -82,7 +84,7 @@
             </div>
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="AdmissionFee" class="control-label"></label>
                     </div>
@@ -94,7 +96,7 @@
             </div>
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="Fine" class="control-label"></label>
                     </div>
@@ -106,7 +108,7 @@
             </div>
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="StationaryCharges" class="control-label"></label>
                     </div>
@@ -118,7 +120,7 @@
             </div>
 
             <div class="form-group">
-                <div class="row mb-3">
+                <div class="row m-3">
                     <div class="col-md-4">
                         <label asp-for="FeePayable" class="control-label"></label>
                     </div>
@@ -130,7 +132,7 @@
             </div>
 
             @*<div class="form-group">
-            <div class="row mb-3">
+            <div class="row m-3">
             <div class="col-md-4">
             <label asp-for="FeePaid" class="control-label"></label>
             </div>
@@ -142,7 +144,7 @@
             </div>*@
 
             @*<div class="form-group">
-            <div class="row mb-3">
+            <div class="row m-3">
             <div class="col-md-4">
             <label asp-for="NextArrears" class="control-label"></label>
             </div>
@@ -154,8 +156,13 @@
             </div>*@
 
             <div class="form-group">
-                <div class="col-md-8 offset-md-4">
-                    <input type="submit" value="Generate Fee Bill" class="btn btn-primary form-control" />
+                <div class="row m-3">
+                    @*<div class="col-md-4">
+                    <label class="control-label"></label>
+                    </div>*@
+                    <div class="col-md-8 offset-md-4">
+                        <input type="submit" value="Generate Fee Bill" class="btn btn-primary form-control" />
+                    </div>
                 </div>
             </div>
 
@@ -177,36 +184,59 @@
     $("#StudentId").change(function () {
         //alert(this.value);
 
-        $('#StudentId').append('<span class="alert-info">Please wait while we are fetching outstanding fee bill, if any!</span>')
+        $('#info').html('INFO: Please wait while we are fetching outstanding fee bill, if any!');
+        $('#info').addClass('alert-info');
 
         var StudentId = parseInt($("#StudentId").val());
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("OutstandingFeeTransaction", "FeeTransactions")',
+            //url: '@Url.Action("OutstandingFeeTransaction", "FeeTransactions")',
+            url: '/FeeTransactions/OutstandingFeeTransaction',
             data: { id: StudentId },
             dataType: 'json',
             success: function (success) {
-                //console.log(success);
+                console.log(success);   //for trial purpose
                 //alert(success.previousArrears);
                 //TutionFee PreviousArrears AdmissionFee Fine StationaryCharges FeePayable
 
-                $("#TutionFee").val(success.tutionFee);
-                if (success.tutionFee) { $('#TutionFee').prop('disabled', true); }
-                $("#PreviousArrears").val(success.previousArrears);
-                if (success.previousArrears) { $('#PreviousArrears').prop('disabled', true); }
-                $("#AdmissionFee").val(success.admissionFee);
+                if (success.tutionFee) {
+                    $("#TutionFee").val(success.tutionFee);
+                    $('#TutionFee').prop('disabled', true);
+                } else {
+                    $("#TutionFee").val(null);
+                    $('#TutionFee').prop('disabled', false);
+                }
+
+                if (success.previousArrears) {
+                    $("#PreviousArrears").val(success.previousArrears);
+                    $('#PreviousArrears').prop('disabled', true);
+                    $('#info').html('INFO: Unpaid fee bill fetched successfully and filled in fields!');
+                    $('#info').removeClass('alert-info').addClass('alert-success');
+
+                    //PreviousArrears found? its not new admission
+                    $("#AdmissionFee").val(0);
+                    $("#AdmissionFee").prop('disabled', true);
+                } else {
+                    $("#PreviousArrears").val(null);
+                    $('#PreviousArrears').prop('disabled', false);
+                    $('#info').html('INFO: No unpaid fee bill found!');
+                    $('#info').removeClass('alert-info').addClass('alert-success');
+
+                    //No PreviousArrears? it may be a new admission
+                    $("#AdmissionFee").val(null);
+                    $("#AdmissionFee").prop('disabled', false);
+                }
+
+                //$("#AdmissionFee").val(success.admissionFee)
                 $("#Fine").val(success.Fine);
                 $("#StationaryCharges").val(success.stationaryCharges);
-                //$("#FeePayable").val(success.feePayable);
-                if (success.feePayable) {
-                    $("#FeePayable").val(success.feePayable);
-                }
-                else {
-                    CalculateFeeBill();
-                }
+
+                success.feePayable ? $("#FeePayable").val(success.feePayable) : CalculateFeeBill();
             },
             error: function (error) {
                 alert(error);
+                $('#info').html('ALERT: Some error occured!');
+                $('#info').removeClass('alert-info').addClass('alert-danger');
             }
         });
     });
